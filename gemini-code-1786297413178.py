@@ -1,5 +1,8 @@
 import logging
+import os
 import random
+from threading import Thread
+from flask import Flask
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import (
     Application,
@@ -11,7 +14,31 @@ from telegram.ext import (
 )
 
 # ---------------------------------------------------------
-# НАСТРОЙКИ
+# НАСТРОЙКИ ВЕБ-СЕРВЕРА ДЛЯ RENDER (WEB SERVICE)
+# ---------------------------------------------------------
+app_flask = Flask('')
+
+
+@app_flask.route('/')
+def home():
+    return "Квиз-бот запущен и отлично работает! ❤️"
+
+
+def run_flask():
+    # Render передаёт порт через переменную окружения PORT
+    port = int(os.environ.get("PORT", 8080))
+    app_flask.run(host='0.0.0.0', port=port)
+
+
+def keep_alive():
+    """Запуск Flask в отдельном потоке."""
+    t = Thread(target=run_flask)
+    t.daemon = True
+    t.start()
+
+
+# ---------------------------------------------------------
+# НАСТРОЙКИ БОТА
 # ---------------------------------------------------------
 BOT_TOKEN = "8906869103:AAFND4E3H0g2oQC2cklM_Zd0ry5jzxRDHtE"
 
@@ -20,7 +47,6 @@ logging.basicConfig(
     level=logging.INFO,
 )
 
-# Пул случайных шуточных реакций при ошибке
 WRONG_ANSWER_TEASES = [
     "Так-так, записываю это в журнал маленьких ошибочек! 📝 Попробуй ещё раз 😉",
     "Холодно, о-о-очень холодно! ❄️ Саня смотрит с легким удивлением... Подумай ещё!",
@@ -202,7 +228,7 @@ QUIZ_DATA = [
             "<b>Блок 3 (11/25) 📸</b>\n"
             "Что за суровый «подпольный клуб» запечатлён на этом фото?"
         ),
-        "photo_id": "PHOTO_ID_1",  # Вставь file_id от 1-й фотки
+        "photo_id": "PHOTO_ID_1",  # Замени на file_id от 1-й фотки
         "options": [
             "1️⃣ Сверхсекретная качалка с пацанами 🏋️‍♂️",
             "2️⃣ Подготовка к ограблению века 🕵️‍♂️",
@@ -217,7 +243,7 @@ QUIZ_DATA = [
             "<b>Блок 3 (12/25) 📸</b>\n"
             "В каком легендарном стиле и образе собралась эта банда?"
         ),
-        "photo_id": "PHOTO_ID_2",  # Вставь file_id от 2-й фотки
+        "photo_id": "PHOTO_ID_2",  # Замени на file_id от 2-й фотки
         "options": [
             "1️⃣ «Острые козырьки» / Стильная Мафия 🎩",
             "2️⃣ Секретная служба охраны президента 🕶️",
@@ -232,7 +258,7 @@ QUIZ_DATA = [
             "<b>Блок 3 (13/25) 📸</b>\n"
             "Какая эпичная битва происходит на этом кадре перед зеркалом?"
         ),
-        "photo_id": "PHOTO_ID_3",  # Вставь file_id от 3-й фотки
+        "photo_id": "PHOTO_ID_3",  # Замени на file_id от 3-й фотки
         "options": [
             "1️⃣ Демонстрация фирменных стоек карате 🥋",
             "2️⃣ Спарринг за последние жареные пельмени 🥟",
@@ -248,7 +274,7 @@ QUIZ_DATA = [
             "Что за маленькая легенда восстанавливает силы на этом архивном"
             " кадре?"
         ),
-        "photo_id": "PHOTO_ID_4",  # Вставь file_id от 4-й фотки
+        "photo_id": "PHOTO_ID_4",  # Замени на file_id от 4-й фотки
         "options": [
             "1️⃣ Маленький Саша восстанавливает ману 🍼",
             "2️⃣ Главный босс этой квартиры 👑",
@@ -263,7 +289,7 @@ QUIZ_DATA = [
             "<b>Блок 3 (15/25) 📸</b>\n"
             "Какой супер-секретный статус или роль у Саши на этом кадре?"
         ),
-        "photo_id": "PHOTO_ID_5",  # Вставь file_id от 5-й фотки
+        "photo_id": "PHOTO_ID_5",  # Замени на file_id от 5-й фотки
         "options": [
             "1️⃣ Анонимный хакер под прикрытием ☔",
             "2️⃣ Элегантный джентльмен 🎩",
@@ -422,16 +448,14 @@ QUIZ_DATA = [
     },
 ]
 
-# Хранилище прогресса
 user_progress = {}
 
 # ---------------------------------------------------------
-# ОБРАБОТЧИКИ
+# ОБРАБОТЧИКИ БОТА
 # ---------------------------------------------------------
 
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Стартовое приветствие."""
     chat_id = update.effective_chat.id
     user_progress[chat_id] = 0
 
@@ -456,7 +480,6 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def send_question(
     update: Update, context: ContextTypes.DEFAULT_TYPE, q_index: int
 ):
-    """Отправка вопроса с кнопками и фотографией (при наличии)."""
     chat_id = update.effective_chat.id
     q_data = QUIZ_DATA[q_index]
 
@@ -487,7 +510,6 @@ async def send_question(
 
 
 async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Обработка кликов по кнопкам."""
     query = update.callback_query
     await query.answer()
 
@@ -529,7 +551,6 @@ async def handle_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 async def photo_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Вспомогательный хэндлер для получения file_id загружаемых картинок."""
     photo = update.message.photo[-1]
     file_id = photo.file_id
     await update.message.reply_text(
@@ -539,14 +560,17 @@ async def photo_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 def main():
-    """Точка входа."""
+    # Запускаем фоновый Flask сервер для Render Web Service
+    keep_alive()
+
+    # Запускаем бота
     app = Application.builder().token(BOT_TOKEN).build()
 
     app.add_handler(CommandHandler("start", start_command))
     app.add_handler(CallbackQueryHandler(handle_callback))
     app.add_handler(MessageHandler(filters.PHOTO, photo_handler))
 
-    print("🚀 Бот-квиз успешно запущен!")
+    print("🚀 Бот-квиз и Flask-сервер успешно запущены!")
     app.run_polling()
 
 
