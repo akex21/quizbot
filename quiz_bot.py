@@ -228,7 +228,7 @@ QUIZ_DATA = [
             "<b>Блок 3 (11/25) 📸</b>\n"
             "Что за суровый «подпольный клуб» запечатлён на этом фото?"
         ),
-        "photo_id": "PHOTO_ID_1",  # Замени на file_id от 1-й фотки
+        "photo_id": "AgACAgIAAxkBAAMaanjCiF4PiJ7DySJEwEbM52vKLXMAAgMcaxvBpMBLN6p_Ufy-pw4BAAMCAAN5AAM9BA",
         "options": [
             "1️⃣ Сверхсекретная качалка с пацанами 🏋️‍♂️",
             "2️⃣ Подготовка к ограблению века 🕵️‍♂️",
@@ -243,7 +243,7 @@ QUIZ_DATA = [
             "<b>Блок 3 (12/25) 📸</b>\n"
             "В каком легендарном стиле и образе собралась эта банда?"
         ),
-        "photo_id": "PHOTO_ID_2",  # Замени на file_id от 2-й фотки
+        "photo_id": "AgACAgIAAxkBAAMcanjDDAFoCCgh0ZqxT7N4zzJbtqMAAgYcaxvBpMBLgLgFZh6Bo3oBAAMCAAN5AAM9BA",
         "options": [
             "1️⃣ «Острые козырьки» / Стильная Мафия 🎩",
             "2️⃣ Секретная служба охраны президента 🕶️",
@@ -258,7 +258,7 @@ QUIZ_DATA = [
             "<b>Блок 3 (13/25) 📸</b>\n"
             "Какая эпичная битва происходит на этом кадре перед зеркалом?"
         ),
-        "photo_id": "PHOTO_ID_3",  # Замени на file_id от 3-й фотки
+        "photo_id": "AgACAgIAAxkBAAMeanjDQSqC5F2YvLG4q0bQgH_NahsAAgccaxvBpMBL6edBXRysMgsBAAMCAAN5AAM9BA",
         "options": [
             "1️⃣ Демонстрация фирменных стоек карате 🥋",
             "2️⃣ Спарринг за последние жареные пельмени 🥟",
@@ -274,7 +274,7 @@ QUIZ_DATA = [
             "Что за маленькая легенда восстанавливает силы на этом архивном"
             " кадре?"
         ),
-        "photo_id": "PHOTO_ID_4",  # Замени на file_id от 4-й фотки
+        "photo_id": "AgACAgIAAxkBAAMganjDegQQv9fGbzREFTIPw4-21LkAAggcaxvBpMBLuSTpLGT9ickBAAMCAAN5AAM9BA",
         "options": [
             "1️⃣ Маленький Саша восстанавливает ману 🍼",
             "2️⃣ Главный босс этой квартиры 👑",
@@ -289,7 +289,7 @@ QUIZ_DATA = [
             "<b>Блок 3 (15/25) 📸</b>\n"
             "Какой супер-секретный статус или роль у Саши на этом кадре?"
         ),
-        "photo_id": "PHOTO_ID_5",  # Замени на file_id от 5-й фотки
+        "photo_id": "AgACAgIAAxkBAAMianjDlvxBdlYhU1TCOGRKLE6_fDgAAgkcaxvBpMBLacGQtdSXZxQBAAMCAAN5AAM9BA",
         "options": [
             "1️⃣ Анонимный хакер под прикрытием ☔",
             "2️⃣ Элегантный джентльмен 🎩",
